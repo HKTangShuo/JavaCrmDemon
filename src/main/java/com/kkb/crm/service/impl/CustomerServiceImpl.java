@@ -1,5 +1,7 @@
 package com.kkb.crm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kkb.crm.dao.CrmCustomerMapper;
 import com.kkb.crm.dao.CrmDictMapper;
 import com.kkb.crm.dto.CustomerQuery;
@@ -22,31 +24,36 @@ public class CustomerServiceImpl implements CustomerService {
     private CrmDictMapper dictMapper;
 
     @Override
-    public List<CrmCustomer> selectCustomerList(CustomerQuery customerQuery) {
+    public PageInfo selectCustomerList(CustomerQuery customerQuery) {
 
         //根据查询对象  进行条件查询
         CrmCustomerExample crmCustomerExample = new CrmCustomerExample();
         CrmCustomerExample.Criteria criteria = crmCustomerExample.createCriteria();
 
         //名称
-        if (StringUtils.isNotEmpty(customerQuery.getCustName())){
-            criteria.andCustNameLike("%"+customerQuery.getCustName()+"%");
+        if (StringUtils.isNotEmpty(customerQuery.getCustName())) {
+            criteria.andCustNameLike("%" + customerQuery.getCustName() + "%");
         }
         //行业
-        if (StringUtils.isNotEmpty(customerQuery.getCustIndustry())){
+        if (StringUtils.isNotEmpty(customerQuery.getCustIndustry())) {
             criteria.andCustIndustryEqualTo(customerQuery.getCustIndustry());
         }
         //来源
-        if (StringUtils.isNotEmpty(customerQuery.getCustSource())){
+        if (StringUtils.isNotEmpty(customerQuery.getCustSource())) {
             criteria.andCustSourceEqualTo(customerQuery.getCustSource());
         }
         //级别
-        if (StringUtils.isNotEmpty(customerQuery.getCustLevel())){
+        if (StringUtils.isNotEmpty(customerQuery.getCustLevel())) {
             criteria.andCustLevelEqualTo(customerQuery.getCustLevel());
         }
 
 
+        // 启用分页插件
+        PageHelper.startPage(customerQuery.getPageNum(), customerQuery.getPageSize());
         List<CrmCustomer> crmCustomerList = crmCustomerMapper.selectByExample(crmCustomerExample);
+        PageInfo<CrmCustomer> pageInfo = new PageInfo<>(crmCustomerList);
+
+
         for (CrmCustomer crmcustomer : crmCustomerList
         ) {
             String fromtype = dictMapper.selectByPrimaryKey(crmcustomer.getCustSource()).getDictItemName();
@@ -56,6 +63,6 @@ public class CustomerServiceImpl implements CustomerService {
             crmcustomer.setCustSource(fromtype);
             crmcustomer.setCustLevel(level);
         }
-        return crmCustomerList;
+        return pageInfo;
     }
 }

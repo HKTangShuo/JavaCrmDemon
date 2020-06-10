@@ -1,7 +1,25 @@
 package com.kkb.crm.dto;
 
 public class CustomerQuery {
-    private String custName,custSource,custIndustry,custLevel;
+
+    private Integer pageNum = 0, pageSize = 10;
+    private String custName, custSource, custIndustry, custLevel;
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
     public String getCustSource() {
         return custSource;

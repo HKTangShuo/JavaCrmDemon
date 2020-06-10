@@ -1,5 +1,6 @@
 package com.kkb.crm.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.kkb.crm.dto.CustomerQuery;
 import com.kkb.crm.pojo.CrmCustomer;
 import com.kkb.crm.pojo.CrmDict;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import java.util.List;
 
@@ -29,16 +31,15 @@ public class CustomerController {
 
     @RequestMapping("/customerList")
     public String showCustomerList(Model model, CustomerQuery customerQuery) {
-
-        List<CrmCustomer> customers = customerService.selectCustomerList(customerQuery);
-
-
+        PageInfo<CrmCustomer> pageInfo = customerService.selectCustomerList(customerQuery);
+        model.addAttribute("pages",pageInfo.getPages());
+        List<CrmCustomer> customers = pageInfo.getList();
         model.addAttribute("customers", customers);
         List<CrmDict> fromType = dictService.selectDictByTypeCode(fromTypecode);
         model.addAttribute("fromType", fromType);
-        List<CrmDict> industry = dictService.selectDictByTypeCode(levelType);
+        List<CrmDict> industry = dictService.selectDictByTypeCode(industryType);
         model.addAttribute("industryType", industry);
-        List<CrmDict> customerLevel = dictService.selectDictByTypeCode(industryType);
+        List<CrmDict> customerLevel = dictService.selectDictByTypeCode(levelType);
         model.addAttribute("levelType", customerLevel);
 
         return "customer";
