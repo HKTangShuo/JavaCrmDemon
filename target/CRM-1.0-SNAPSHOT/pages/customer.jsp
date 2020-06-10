@@ -447,7 +447,6 @@
     }
 
     function updateCustomer() {
-        //alert($("#edit_customer_form").serialize());
         $.post("<%=basePath%>customer/update", $("#edit_customer_form").serialize(), function (data) {
             alert("客户信息更新成功！");
             window.location.reload();

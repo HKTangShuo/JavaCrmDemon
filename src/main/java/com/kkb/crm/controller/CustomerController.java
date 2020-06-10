@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class CustomerController {
     @RequestMapping("/customerList")
     public String showCustomerList(Model model, CustomerQuery customerQuery) {
         PageInfo<CrmCustomer> pageInfo = customerService.selectCustomerList(customerQuery);
-        model.addAttribute("pages",pageInfo.getPages());
+        model.addAttribute("pages", pageInfo.getPages());
         List<CrmCustomer> customers = pageInfo.getList();
         model.addAttribute("customers", customers);
         List<CrmDict> fromType = dictService.selectDictByTypeCode(fromTypecode);
@@ -45,5 +46,22 @@ public class CustomerController {
         return "customer";
     }
 
+    @ResponseBody
+    @RequestMapping("/customer/edit")
+    public CrmCustomer selectUserById(Integer id) {
+        return customerService.selectUserById(id);
+    }
 
+    @ResponseBody
+    @RequestMapping("/customer/update")
+    public String UpdateUser(CrmCustomer crmCustomer) {
+        customerService.updateUser(crmCustomer);
+        return "{\"status\":\"ok\"}";
+    }
+    @ResponseBody
+    @RequestMapping("/customer/delete")
+    public String DeleteUser(Integer id) {
+        customerService.DeleteUser(id);
+        return "{\"status\":\"ok\"}";
+    }
 }

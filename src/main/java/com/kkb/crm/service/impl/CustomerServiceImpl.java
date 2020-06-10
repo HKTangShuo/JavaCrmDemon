@@ -65,4 +65,23 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return pageInfo;
     }
+
+    @Override
+    public CrmCustomer selectUserById(Integer id) {
+
+        return crmCustomerMapper.selectByPrimaryKey(id.longValue());
+    }
+
+    @Override
+    public void updateUser(CrmCustomer crmCustomer) {
+
+
+        crmCustomerMapper.updateByPrimaryKey(crmCustomer);
+    }
+
+    @Override
+    public void DeleteUser(Integer id) {
+
+        crmCustomerMapper.deleteByPrimaryKey(Long.valueOf(id));
+    }
 }
