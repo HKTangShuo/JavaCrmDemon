@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="modal-footer">
+            <span style="color:red">${msg}</span>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary form-control" value="登录">
             </div>
