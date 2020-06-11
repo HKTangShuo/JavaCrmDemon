@@ -1,5 +1,5 @@
 # JavaCrmDemon
-ssm框架完成的crm小案例
+ssm框架完成的crm小案例,简单增删改查
 ## 登录页
 ![avatar](https://github.com/15595769530/JavaCrmDemon/blob/master/login.PNG)
 
